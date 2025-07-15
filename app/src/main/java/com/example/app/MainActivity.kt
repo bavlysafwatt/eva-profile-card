@@ -38,6 +38,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.app.ui.theme.AppTheme
 import android.widget.Toast
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 
 class MainActivity : ComponentActivity() {
@@ -76,7 +86,16 @@ fun ProfileCard(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(
+                        Color(0xFFA1C4FD),
+                        Color(0xFFC2E9FB)
+                    ),
+                    start = Offset(0f, 0f),
+                    end = Offset(0f, 1000f)
+                ),
+            ),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -87,7 +106,7 @@ fun ProfileCard(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .size(130.dp)
                     .clip(CircleShape)
-                    .background(Color.Gray),
+                    .background(Color.White),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -108,6 +127,7 @@ fun ProfileCard(modifier: Modifier = Modifier) {
                     },
                     isError = nameError
                 )
+                Spacer(modifier = Modifier.height(8.dp))
                 EditableField(
                     label = "Job Title",
                     value = jobTitle,
@@ -117,6 +137,7 @@ fun ProfileCard(modifier: Modifier = Modifier) {
                     },
                     isError = jobTitleError
                 )
+                Spacer(modifier = Modifier.height(8.dp))
                 EditableField(
                     label = "Bio",
                     value = bio,
@@ -142,23 +163,45 @@ fun ProfileCard(modifier: Modifier = Modifier) {
                         isEditMode = false
                         Toast.makeText(context, "Profile saved successfully", Toast.LENGTH_SHORT).show()
                     }
-                }) {
+                }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xff13547a), contentColor = Color.White)) {
                     Text("Save")
                 }
             } else {
-                Text("Name: $name", style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.Bold), color = Color.Black)
+                Text(name, style = TextStyle(fontSize = 34.sp, fontWeight = FontWeight.Bold), color = Color.Black)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(jobTitle, style = TextStyle(fontSize = 20.sp), color = Color.Black)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Job: $jobTitle", style = TextStyle(fontSize = 20.sp), color = Color.Black)
+                Text(bio, style = TextStyle(fontSize = 20.sp, textAlign = TextAlign.Center), color = Color.Black)
+                Spacer(modifier = Modifier.height(20.dp))
+                Box(modifier = Modifier.padding(horizontal = 50.dp).fillMaxWidth().background(Color.White, shape = RoundedCornerShape(16.dp)).padding(16.dp)){
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Filled.Phone,
+                            contentDescription = "Phone Icon",
+                            tint = Color.Gray,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(phone, style = TextStyle(fontSize = 20.sp, color = Color.Black))
+                    }
+                }
                 Spacer(modifier = Modifier.height(8.dp))
-                Text("Bio: $bio", style = TextStyle(fontSize = 20.sp, textAlign = TextAlign.Center), color = Color.Black)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Phone: $phone", style = TextStyle(fontSize = 20.sp), color = Color.Black)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Email: $email", style = TextStyle(fontSize = 20.sp), color = Color.Black)
+                Box(modifier = Modifier.padding(horizontal = 50.dp).fillMaxWidth().background(Color.White, shape = RoundedCornerShape(16.dp)).padding(16.dp)){
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            imageVector = Icons.Filled.Email,
+                            contentDescription = "Phone Icon",
+                            tint = Color.Gray,
+                            modifier = Modifier.size(24.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(email, style = TextStyle(fontSize = 20.sp, color = Color.Black))
+                    }
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                Button(onClick = { isEditMode = true }) {
+                Button(onClick = { isEditMode = true }, colors = ButtonDefaults.buttonColors(containerColor = Color(0xff13547a), contentColor = Color.White)) {
                     Text("Edit Profile")
                 }
             }
@@ -177,7 +220,7 @@ fun EditableField(
         value = value,
         onValueChange = onValueChange,
         label = { Text(label, color = Color.Black) },
-        textStyle = TextStyle(color = Color.Black),
+        textStyle = TextStyle(color = Color.Black, fontSize = 16.sp),
         singleLine = true,
         isError = isError,
         modifier = Modifier
@@ -190,7 +233,7 @@ fun EditableField(
 
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun ProfileCardPrefiew() {
     AppTheme {
         ProfileCard()
     }
